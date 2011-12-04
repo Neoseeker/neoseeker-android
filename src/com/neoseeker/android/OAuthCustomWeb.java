@@ -39,13 +39,13 @@ public class OAuthCustomWeb extends Activity {
     			Uri uri = Uri.parse(url);
     			final String oauth_verifier = uri.getQueryParameter(OAuth.OAUTH_VERIFIER);
             	try {
+					Neoseeker.API().authenticate(oauth_verifier);
                 	// Whenever we get the accessToken and accessTokenSecret...
         	    	SharedPreferences sharedSettings = getSharedPreferences(Neoseeker.PREFS_NAME, 0);
                 	SharedPreferences.Editor sharedSettingsEditor = sharedSettings.edit();
                 	sharedSettingsEditor.putString("accessToken", Neoseeker.API().getAccessToken());
                 	sharedSettingsEditor.putString("accessTokenSecret", Neoseeker.API().getAccessTokenSecret());
                 	sharedSettingsEditor.commit();
-					Neoseeker.API().authenticate(oauth_verifier);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
