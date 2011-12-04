@@ -18,6 +18,13 @@ public class NeoEntry extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        // For debugging
+        //SharedPreferences sharedSettings = getSharedPreferences(Neoseeker.PREFS_NAME, 0);
+    	//SharedPreferences.Editor sharedSettingsEditor = sharedSettings.edit();
+    	//sharedSettingsEditor.putString("accessToken", "");
+    	//sharedSettingsEditor.putString("accessTokenSecret", "");
+    	//sharedSettingsEditor.commit();
+        
         // Anything needed to be done on entry
         this.setUpOAuth(); 
         
@@ -25,13 +32,6 @@ public class NeoEntry extends Activity {
         Intent neoMain = new Intent(this, NeoMain.class);
         startActivity(neoMain);
         finish();
-        
-        // For debugging
-        SharedPreferences sharedSettings = getSharedPreferences(Neoseeker.PREFS_NAME, 0);
-    	SharedPreferences.Editor sharedSettingsEditor = sharedSettings.edit();
-    	sharedSettingsEditor.putString("accessToken", "");
-    	sharedSettingsEditor.putString("accessTokenSecret", "");
-    	sharedSettingsEditor.commit();
     }
     
     /**
