@@ -3,8 +3,16 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <TextView  
+    <TextView
+        android:id="@+id/PMText"
 	    android:layout_width="fill_parent" 
 	    android:layout_height="wrap_content" 
 	    android:text="PM List Activity!" />
+
+    <Button
+        android:id="@+id/PMTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button" />
+
 </LinearLayout>

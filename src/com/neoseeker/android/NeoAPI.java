@@ -1,9 +1,7 @@
 package com.neoseeker.android;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.net.MalformedURLException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
@@ -27,8 +25,6 @@ public class NeoAPI {
 	
 	private String consumerKey;
 	private String consumerSecret;
-	private String accessToken;
-	private String accessTokenSecret;
 	private static String requestTokenURL		= "http://api.neoseeker.com/oauth/request.php";
 	private static String accessTokenURL		= "http://api.neoseeker.com/oauth/access.php";
 	private static String authTokenURL			= "http://api.neoseeker.com/oauth/authorize.php";
@@ -51,20 +47,13 @@ public class NeoAPI {
 	}
 	
 	/**
-	 * Sets the Access Token used for API call authentication
+	 * Sets the Access Token and Access Token secret used for API call authentication
 	 * @param accessToken
 	 */
-	public void setAccessToken(String accessToken) {
-		this.accessToken = accessToken;
+	public void setAccessTokenWithSecret(String accessToken, String accessTokenSecret) {
+		this.consumer.setTokenWithSecret(accessToken, accessTokenSecret);
 	}
 	
-	/**
-	 * Sets the Access Token Secret used for API call authentication
-	 * @param accessTokenSecret
-	 */
-	public void setAccessTokenSecret(String accessTokenSecret) {
-		this.accessTokenSecret = accessTokenSecret;
-	}
 	
 	/**
 	 * Returns the Access Token returned from Neoseeker
@@ -131,21 +120,13 @@ public class NeoAPI {
 		return authUrl;
 	}
 	
-	private boolean authenticate() throws Exception {
-
-		if (true) { // If we need to authenticate
-			String authUrl = this.provider.retrieveRequestToken(this.consumer, OAuth.OUT_OF_BAND);
-			String pin = "";
-			// Get authUrl to throw browser Intent
-			// Whatever was on the page should be placed in the pin
-			this.provider.retrieveAccessToken(consumer, pin);
-		} else {
-			// We've authenticated before, just set tokens
-			
-			
-			this.consumer.setTokenWithSecret("5db3ef664a1e72c7c0aca64788fcdcd6e59a0830", "0593bf70a3bde3ebdf7b71553acdc68b99c3d347");
-		}
-		
-		return true;
+	/**
+	 * 
+	 * @param oauth_verifier
+	 * @throws Exception
+	 */
+	public void authenticate(String oauth_verifier) throws Exception {
+		this.provider.retrieveAccessToken(consumer, oauth_verifier);
+		this.setAccessTokenWithSecret(this.consumer.getToken(), this.consumer.getTokenSecret());
 	}
 }
