@@ -31,7 +31,7 @@ public class PMListActivity extends Activity {
 					result = "failed";
 					e.printStackTrace();
 				}
-        		pmtext.setText(result);
+        		pmtext.setText(result + "\nAccess token: " + Neoseeker.API().getAccessToken() + "\nSecret: " + Neoseeker.API().getAccessTokenSecret());
         	}
         });
     }
