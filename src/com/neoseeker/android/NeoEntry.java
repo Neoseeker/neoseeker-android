@@ -1,5 +1,8 @@
 package com.neoseeker.android;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,6 +28,15 @@ public class NeoEntry extends Activity {
     private void finishSetup() {
         // After entry stuff are all done... Forward to NeoMain
         Intent neoMain = new Intent(this, NeoMain.class);
+        JSONObject meJSONObject = null;
+		try {
+			meJSONObject = new JSONObject(Neoseeker.API().makeRequest("members/me/"));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+		}
+        Neoseeker.Me = new User(meJSONObject);
         startActivityForResult(neoMain, 0);
         finish();
     }

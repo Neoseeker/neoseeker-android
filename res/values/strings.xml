@@ -2,4 +2,5 @@
 <resources>
     <string name="hello">Hello World, NeoMain!</string>
     <string name="app_name">Neoseeker</string>
+    <string name="menu_logout_text">Logout</string>
 </resources>

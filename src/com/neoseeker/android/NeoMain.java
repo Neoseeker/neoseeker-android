@@ -1,10 +1,18 @@
 package com.neoseeker.android;
 
+import android.app.AlertDialog;
 import android.app.TabActivity;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 public class NeoMain extends TabActivity {
 	
@@ -45,5 +53,57 @@ public class NeoMain extends TabActivity {
         tabHost.addTab(spec);
 
         tabHost.setCurrentTab(0);
+    }
+    
+    /**
+     * Setup the main menu, for whenever the user hits the menu button on the phone
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	MenuInflater inflater = getMenuInflater();
+    	inflater.inflate(R.menu.main_menu, menu);
+    	return true;
+    }
+    
+    /**
+     * What should be done for each menu item pressed
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	switch (item.getItemId()) {
+    	case R.id.menu_logout:
+    		MenuLogout();
+    		return true;
+    	default:
+    		return super.onOptionsItemSelected(item);
+    	}
+    }
+    
+    /**
+     * Helper method for what happens when you logout
+     */
+    private void MenuLogout() {
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	builder.setMessage("Are you sure you want to logout?");
+    	builder.setCancelable(false);
+    	builder.setPositiveButton("Yes", new OnClickListener() {
+    		public void onClick(DialogInterface dialog, int id) {
+    	        SharedPreferences sharedSettings = getSharedPreferences(Neoseeker.PREFS_NAME, 0);
+    	    	SharedPreferences.Editor sharedSettingsEditor = sharedSettings.edit();
+    	    	sharedSettingsEditor.putString("accessToken", "");
+    	    	sharedSettingsEditor.putString("accessTokenSecret", "");
+    	    	sharedSettingsEditor.commit();
+    			Toast.makeText(NeoMain.this, "Logout", Toast.LENGTH_SHORT).show();
+    			Intent neoMainIntent = new Intent(NeoMain.this, NeoEntry.class);
+    			NeoMain.this.startActivity(neoMainIntent);
+    		}
+    	});
+    	builder.setNegativeButton("No", new OnClickListener() {
+    		public void onClick(DialogInterface dialog, int id) {
+    			dialog.cancel();
+    		}
+    	});
+    	AlertDialog alert = builder.create();
+    	alert.show();
     }
 }
