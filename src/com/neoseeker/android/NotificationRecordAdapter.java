@@ -13,8 +13,8 @@ import android.widget.TextView;
 public class NotificationRecordAdapter extends ArrayAdapter<NotificationRecord> {
 	private ArrayList<NotificationRecord> users;
 	
-	public NotificationRecordAdapter(Context context, int textViewResourceId, ArrayList<NotificationRecord> users) {
-		super(context, textViewResourceId, users);
+	public NotificationRecordAdapter(Context notificationsFragment, int textViewResourceId, ArrayList<NotificationRecord> users) {
+		super(notificationsFragment, textViewResourceId, users);
 		this.users = users;
 	}
 	

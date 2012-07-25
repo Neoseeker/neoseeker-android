@@ -22,7 +22,9 @@ public class NeoEntry extends Activity {
     }
     
     private void startSetup() {
-    	this.setUpOAuth();
+    	//this.setUpOAuth();
+    	Intent neoMain = new Intent(this, NeoMain.class);
+    	startActivity(neoMain);
     }
     
     private void finishSetup() {

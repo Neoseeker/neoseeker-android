@@ -1,20 +1,33 @@
 package com.neoseeker.android;
 
+import java.util.ArrayList;
+
 import android.app.AlertDialog;
-import android.app.TabActivity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.TabHost;
+import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class NeoMain extends TabActivity {
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.Tab;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+
+public class NeoMain extends SherlockFragmentActivity {
+	
+	ViewPager mViewPager;
+	TabsAdapter mTabsAdapter;
+	TextView tabCenter;
+	TextView tabText;
 	
     /**
      * Called whenever the Activity is started
@@ -22,62 +35,131 @@ public class NeoMain extends TabActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.neomain);
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         
-        this.setUpTabs();
+        mViewPager = new ViewPager(this);
+        mViewPager.setId(R.id.viewpager);
+        
+        setContentView(mViewPager);
+        ActionBar bar = getSupportActionBar();
+        //bar.setDisplayHomeAsUpEnabled(true);
+        bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        
+        mTabsAdapter = new TabsAdapter(this, mViewPager);
+
+        mTabsAdapter.addTab(bar.newTab().setText("Private Messages"), PMListFragment.class, null);
+        mTabsAdapter.addTab(bar.newTab().setText("Notifications"), NotificationsFragment.class, null);
+
     }
     
-    /**
-     * Setup the TabHost, and add in the necessary Tabs
-     */
-    private void setUpTabs() {
-    	Resources res = getResources(); // Resource object to get Drawables
-        TabHost tabHost = getTabHost();  // The activity TabHost
-        TabHost.TabSpec spec;  // Reusable TabSpec for each tab
-        Intent intent;  // Reusable Intent for each tab
+    public static class TabsAdapter extends FragmentPagerAdapter implements
+    ActionBar.TabListener, ViewPager.OnPageChangeListener {
+		private final Context mContext;
+	    private final com.actionbarsherlock.app.ActionBar mActionBar;
+	    private final ViewPager mViewPager;
+	    private final ArrayList<TabInfo> mTabs = new ArrayList<TabInfo>();
 
-        // Create an Intent to launch an Activity for the tab (to be reused)
-        intent = new Intent().setClass(this, PMListActivity.class);
+	    static final class TabInfo {
+	        private final Class<?> clss;
+	        private final Bundle args;
 
-        // Initialize a TabSpec for each tab and add it to the TabHost
-        spec = tabHost.newTabSpec("pms").setIndicator("PM's",
-                          res.getDrawable(R.drawable.ic_tab_pm))
-                      .setContent(intent);
-        tabHost.addTab(spec);
+	        TabInfo(Class<?> _class, Bundle _args) {
+	            clss = _class;
+	            args = _args;
+	        }
+	    }
 
-        // Do the same for the other tabs
-        intent = new Intent().setClass(this, NotificationsActivity.class);
-        spec = tabHost.newTabSpec("notifications").setIndicator("Notifications",
-                          res.getDrawable(R.drawable.ic_tab_notification))
-                      .setContent(intent);
-        tabHost.addTab(spec);
+	    public TabsAdapter(SherlockFragmentActivity activity, ViewPager pager) {
+	        super(activity.getSupportFragmentManager());
+	        mContext = activity;
+	        mActionBar = activity.getSupportActionBar();
+	        mViewPager = pager;
+	        mViewPager.setAdapter(this);
+	        mViewPager.setOnPageChangeListener(this);
+	    }
 
-        tabHost.setCurrentTab(0);
-    }
+	    public void addTab(ActionBar.Tab tab, Class<?> clss, Bundle args) {
+	        TabInfo info = new TabInfo(clss, args);
+	        tab.setTag(info);
+	        tab.setTabListener(this);
+	        mTabs.add(info);
+	        mActionBar.addTab(tab);
+	        notifyDataSetChanged();
+	    }
+
+	    @Override
+	    public int getCount() {
+	        return mTabs.size();
+	    }
+
+	    @Override
+	    public android.support.v4.app.Fragment getItem(int position) {
+	        TabInfo info = mTabs.get(position);
+	        return android.support.v4.app.Fragment.instantiate(mContext, info.clss.getName(),
+	                info.args);
+	    }
+
+	    //@Override
+	    public void onPageScrolled(int position, float positionOffset,
+	            int positionOffsetPixels) {
+	    }
+
+	    //@Override
+	    public void onPageSelected(int position) {
+	        mActionBar.setSelectedNavigationItem(position);
+	    }
+
+	    //@Override
+	    public void onPageScrollStateChanged(int state) {
+	    }
+
+		//@Override
+		public void onTabSelected(Tab tab, android.support.v4.app.FragmentTransaction ft) {
+	        Object tag = tab.getTag();
+	        for (int i = 0; i < mTabs.size(); i++) {
+	            if (mTabs.get(i) == tag) {
+	                mViewPager.setCurrentItem(i);
+	            }
+	        }
+			
+		}
+
+		//@Override
+		public void onTabUnselected(Tab tab, android.support.v4.app.FragmentTransaction ft) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		//@Override
+		public void onTabReselected(Tab tab, android.support.v4.app.FragmentTransaction ft) {
+			// TODO Auto-generated method stub
+			
+		}
+	}
     
-    /**
-     * Setup the main menu, for whenever the user hits the menu button on the phone
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-    	MenuInflater inflater = getMenuInflater();
-    	inflater.inflate(R.menu.main_menu, menu);
-    	return true;
-    }
-    
-    /**
-     * What should be done for each menu item pressed
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-    	switch (item.getItemId()) {
-    	case R.id.menu_logout:
-    		MenuLogout();
-    		return true;
-    	default:
-    		return super.onOptionsItemSelected(item);
-    	}
-    }
+//    /**
+//     * Setup the main menu, for whenever the user hits the menu button on the phone
+//     */
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//    	MenuInflater inflater = getMenuInflater();
+//    	inflater.inflate(R.menu.main_menu, menu);
+//    	return true;
+//    }
+//    
+//    /**
+//     * What should be done for each menu item pressed
+//     */
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//    	switch (item.getItemId()) {
+//    	case R.id.menu_logout:
+//    		MenuLogout();
+//    		return true;
+//    	default:
+//    		return super.onOptionsItemSelected(item);
+//    	}
+//    }
     
     /**
      * Helper method for what happens when you logout

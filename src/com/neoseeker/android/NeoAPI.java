@@ -9,7 +9,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import oauth.signpost.OAuth;
+import android.util.Log;
+
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.OAuthProvider;
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
@@ -25,9 +26,9 @@ public class NeoAPI {
 	
 	private String consumerKey;
 	private String consumerSecret;
-	private static String requestTokenURL		= "http://api.neoseeker.com/oauth/request.php";
-	private static String accessTokenURL		= "http://api.neoseeker.com/oauth/access.php";
-	private static String authTokenURL			= "http://api.neoseeker.com/oauth/authorize.php";
+	private static String requestTokenURL		= "http://api.betack.neoseeker.com/oauth/request.php";
+	private static String accessTokenURL		= "http://api.betack.neoseeker.com/oauth/access.php";
+	private static String authTokenURL			= "http://api.betack.neoseeker.com/oauth/authorize.php";
 	
 	private OAuthConsumer consumer;
 	private OAuthProvider provider;
@@ -103,19 +104,19 @@ public class NeoAPI {
 	public String getAuthenticationUrl() {
 		String authUrl = "";
 		try {
-			authUrl = this.provider.retrieveRequestToken(this.consumer, OAuth.OUT_OF_BAND);
+			authUrl = this.provider.retrieveRequestToken(this.consumer, "neoseeker-app://oauth");
 		} catch (OAuthMessageSignerException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e("NeoAPI", "OAuthMessageSignerException: " + e.getMessage());
 		} catch (OAuthNotAuthorizedException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e("NeoAPI", "OAuthNotAuthorizedException: " + e.getMessage());
 		} catch (OAuthExpectationFailedException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e("NeoAPI", "OAuthExpectationFailedException: " + e.getMessage());
 		} catch (OAuthCommunicationException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e("NeoAPI", "OAuthCommunicationException: " + e.getMessage());
 		}
 		return authUrl;
 	}

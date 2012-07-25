@@ -5,27 +5,25 @@
       android:versionName="1.0">
     <uses-permission
         android:name="android.permission.INTERNET" />
-    <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="7" />
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="14" />
 
     <application android:icon="@drawable/neoseeker_swoosh" android:label="@string/app_name">
         <activity android:name=".NeoEntry"
                   android:label="@string/app_name"
-                  android:theme="@android:style/Theme.NoTitleBar">
+                  android:theme="@style/Theme.Sherlock">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".NeoMain"
-                  android:label="@string/app_name"
-                  android:theme="@android:style/Theme.NoTitleBar">
+                  android:label="@string/app_name">
         </activity>
         <activity android:name="OAuthCustomWeb">
 		</activity>
-        <activity android:label="@string/app_name" android:name="NotificationsActivity">
+        <activity android:label="@string/app_name" android:name=".NotificationsFragment">
 		</activity>
-        <activity android:label="@string/app_name" android:name="PMListActivity">
+        <activity android:label="@string/app_name" android:name=".PMListFragment">
 		</activity>
     </application>
-    <application android:icon="@drawable/neoseeker_swoosh" android:label="@string/app_name" android:name="Neoseeker"></application>
 </manifest>
