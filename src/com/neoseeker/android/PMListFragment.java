@@ -12,13 +12,15 @@ public class PMListFragment extends Fragment {
 	private TextView pmtext;
 	
 	 /** Called when the activity is first created. */
-    public View onCreate(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        pmtext = (TextView)getView().findViewById(R.id.PMText);        
+        View view = inflater.inflate(R.layout.pmlistfragment, container, false);
+        
+        pmtext = (TextView)view.findViewById(R.id.PMText);        
         //pmtext.setText(Neoseeker.Me.getUsername());
         pmtext.setText("Your name here");
-		return inflater.inflate(R.layout.pmlistactivity, container, false);
+		return view;
         
     }
 }

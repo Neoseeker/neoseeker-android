@@ -14,7 +14,7 @@ public class NotificationsFragment extends ListFragment {
 	
 	private final String[] stuff = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 	
-    public View onCreate(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
 //        ArrayList<NotificationRecord> users = new ArrayList<NotificationRecord>();
@@ -43,7 +43,7 @@ public class NotificationsFragment extends ListFragment {
         ListAdapter myListAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, stuff);
         setListAdapter(myListAdapter);
 
-		return inflater.inflate(R.layout.notificationactivity, container, false);
+		return inflater.inflate(R.layout.notificationfragment, container, false);
     }
     
     @Override
