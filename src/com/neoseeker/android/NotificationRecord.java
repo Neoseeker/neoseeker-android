@@ -7,6 +7,7 @@ import java.net.URL;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 public class NotificationRecord {
 	Bitmap avatarBitmap;
@@ -19,12 +20,12 @@ public class NotificationRecord {
 	public NotificationRecord(String username) {
 		this.username = username;
 		
-		try {
-		  this.avatarBitmap = BitmapFactory.decodeStream((InputStream)new URL("http://i.neoseeker.com/m/76710_photo.png").getContent());
-		} catch (MalformedURLException e) {
-		  e.printStackTrace();
-		} catch (IOException e) {
-		  e.printStackTrace();
-		}
+//		try {
+//			this.avatarBitmap = BitmapFactory.decodeStream((InputStream)new URL("http://i.neoseeker.com/m/76710_photo.png").getContent());
+//		} catch (MalformedURLException e) {
+//			Log.e("NotificationRecord", "MalformedURLException");
+//		} catch (IOException e) {
+//			Log.e("NotificationRecord", "IOException");
+//		}
 	}
 }

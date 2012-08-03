@@ -16,15 +16,12 @@ public class OAuthCustomWeb extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.v(TAG, "In WebView");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.oauthcustomweb);
         
         // Get the authentication URL sent with the Intent
         String authUrl = getIntent().getExtras().getString("authUrl");
         Log.v(TAG, "authUrl: \"" + authUrl + "\"");
-        
-        Log.v(TAG, getIntent().toUri(0));
         
         this.mainWebView = (WebView) findViewById(R.id.OAuthWebView);
         this.mainWebView.setWebViewClient(new CustomWebViewClient());

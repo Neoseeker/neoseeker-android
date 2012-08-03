@@ -3,14 +3,7 @@ package com.neoseeker.android;
 import java.io.InputStream;
 import java.io.StringWriter;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import android.util.Log;
-
+import oauth.signpost.OAuth;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.OAuthProvider;
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
@@ -19,6 +12,15 @@ import oauth.signpost.exception.OAuthCommunicationException;
 import oauth.signpost.exception.OAuthExpectationFailedException;
 import oauth.signpost.exception.OAuthMessageSignerException;
 import oauth.signpost.exception.OAuthNotAuthorizedException;
+import oauth.signpost.signature.HmacSha1MessageSigner;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import android.util.Log;
 
 
 public class NeoAPI {
@@ -26,9 +28,9 @@ public class NeoAPI {
 	
 	private String consumerKey;
 	private String consumerSecret;
-	private static String requestTokenURL		= "http://api.betack.neoseeker.com/oauth/request.php";
-	private static String accessTokenURL		= "http://api.betack.neoseeker.com/oauth/access.php";
-	private static String authTokenURL			= "http://api.betack.neoseeker.com/oauth/authorize.php";
+	private static String requestTokenURL		= "http://api.neoseeker.com/oauth/request.php";
+	private static String accessTokenURL		= "http://api.neoseeker.com/oauth/access.php";
+	private static String authTokenURL			= "http://api.neoseeker.com/oauth/authorize.php";
 	
 	private OAuthConsumer consumer;
 	private OAuthProvider provider;
@@ -43,8 +45,9 @@ public class NeoAPI {
 		this.consumerSecret = consumerSecret;
 		
 		this.consumer = new CommonsHttpOAuthConsumer(this.consumerKey, this.consumerSecret);
-
+		this.consumer.setMessageSigner(new HmacSha1MessageSigner());
 		this.provider = new CommonsHttpOAuthProvider(NeoAPI.requestTokenURL, NeoAPI.accessTokenURL, NeoAPI.authTokenURL);
+		this.provider.setOAuth10a(true);
 	}
 	
 	/**
@@ -104,19 +107,15 @@ public class NeoAPI {
 	public String getAuthenticationUrl() {
 		String authUrl = "";
 		try {
-			authUrl = this.provider.retrieveRequestToken(this.consumer, "neoseeker-app://oauth");
+			authUrl = this.provider.retrieveRequestToken(this.consumer, OAuth.OUT_OF_BAND);
 		} catch (OAuthMessageSignerException e) {
-			// TODO Auto-generated catch block
 			Log.e("NeoAPI", "OAuthMessageSignerException: " + e.getMessage());
 		} catch (OAuthNotAuthorizedException e) {
-			// TODO Auto-generated catch block
 			Log.e("NeoAPI", "OAuthNotAuthorizedException: " + e.getMessage());
 		} catch (OAuthExpectationFailedException e) {
-			// TODO Auto-generated catch block
 			Log.e("NeoAPI", "OAuthExpectationFailedException: " + e.getMessage());
 		} catch (OAuthCommunicationException e) {
-			// TODO Auto-generated catch block
-			Log.e("NeoAPI", "OAuthCommunicationException: " + e.getMessage());
+			Log.e("NeoAPI", "OAuthCommunicationException: " + e);
 		}
 		return authUrl;
 	}

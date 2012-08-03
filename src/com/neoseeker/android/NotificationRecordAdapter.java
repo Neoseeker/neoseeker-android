@@ -34,8 +34,8 @@ public class NotificationRecordAdapter extends ArrayAdapter<NotificationRecord> 
 			if (username != null) {
 				username.setText(user.username);
 			}
-			
-			avatar.setImageBitmap(user.avatarBitmap);
+			avatar.setImageResource(R.drawable.neoseeker_swoosh);
+			//avatar.setImageBitmap(user.avatarBitmap);
 		}
 		
 		return v;
