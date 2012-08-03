@@ -107,7 +107,7 @@ public class NeoAPI {
 	public String getAuthenticationUrl() {
 		String authUrl = "";
 		try {
-			authUrl = this.provider.retrieveRequestToken(this.consumer, OAuth.OUT_OF_BAND);
+			authUrl = this.provider.retrieveRequestToken(this.consumer, "neoseeker-app://oauth");
 		} catch (OAuthMessageSignerException e) {
 			Log.e("NeoAPI", "OAuthMessageSignerException: " + e.getMessage());
 		} catch (OAuthNotAuthorizedException e) {
