@@ -60,7 +60,6 @@ public class NeoEntry extends Activity {
         	startActivityForResult(webAuthentication, 0);
         } else {
         	// Tokens already exist, meaning they can be used (hopefully)
-        	Neoseeker.API().getAuthenticationUrl();
         	Neoseeker.API().setAccessTokenWithSecret(accessToken, accessTokenSecret);
         	finishSetup();
         }

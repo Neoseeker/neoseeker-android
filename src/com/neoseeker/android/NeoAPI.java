@@ -3,7 +3,6 @@ package com.neoseeker.android;
 import java.io.InputStream;
 import java.io.StringWriter;
 
-import oauth.signpost.OAuth;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.OAuthProvider;
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
