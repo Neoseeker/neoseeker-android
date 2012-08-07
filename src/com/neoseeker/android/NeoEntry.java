@@ -23,8 +23,6 @@ public class NeoEntry extends Activity {
     
     private void startSetup() {
     	this.setUpOAuth();
-    	//Intent neoMain = new Intent(this, NeoMain.class);
-    	//startActivity(neoMain);
     }
     
     private void finishSetup() {
@@ -52,7 +50,8 @@ public class NeoEntry extends Activity {
         String accessToken = sharedSettings.getString("accessToken", "");
         String accessTokenSecret = sharedSettings.getString("accessTokenSecret", "");
         
-        if (accessToken.equals("") && accessTokenSecret.equals("")) {        	
+        if (accessToken.equals("") && accessTokenSecret.equals("")) {  
+        	Neoseeker.API().getRequestToken();
         	String authUrl = Neoseeker.API().getAuthenticationUrl();
         	
         	Intent webAuthentication = new Intent(this, OAuthCustomWeb.class);
